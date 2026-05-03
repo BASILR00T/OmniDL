@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #08080A;
+  --color-bg-elevated: #101013;
+  --color-bg-card: #15151A;
+  --color-bg-hover: #1C1C22;
+  --color-border: #1F1F26;
+  --color-border-strong: #2A2A33;
+  --color-text: #F5F5F7;
+  --color-text-secondary: #A1A1AA;
+  --color-text-tertiary: #52525B;
+  --color-text-quaternary: #2A2A33;
+
+  /* Accent — refined indigo, not garish */
+  --color-accent: #7C5CFF;
+  --color-accent-hover: #8E73FF;
+  --color-accent-glow: rgba(124, 92, 255, 0.4);
+
+  --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html, body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11", "kern";
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -20%, rgba(124, 92, 255, 0.12), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 120%, rgba(124, 92, 255, 0.06), transparent 70%);
+  background-attachment: fixed;
+}
+
+/* Hide details default marker */
+details > summary { list-style: none; cursor: pointer; }
+details > summary::-webkit-details-marker { display: none; }
+
+* { -webkit-tap-highlight-color: transparent; }
+
+input:focus-visible, button:focus-visible, a:focus-visible {
+  outline: none;
+}
+
+::selection {
+  background: var(--color-accent-glow);
+  color: var(--color-text);
+}
+
+/* Glass card */
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.015) 100%);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--color-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 0 rgba(255, 255, 255, 0.03),
+    0 20px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+/* Premium accent button */
+.btn-primary {
+  background: linear-gradient(180deg, #8E73FF 0%, #6B4DFA 100%);
+  color: white;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 1px 0 rgba(0, 0, 0, 0.4),
+    0 8px 24px -8px var(--color-accent-glow);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.15s ease;
+}
+.btn-primary:hover:not(:disabled) {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 1px 0 rgba(0, 0, 0, 0.4),
+    0 12px 32px -8px var(--color-accent-glow);
+}
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--color-text);
+}
+.btn-secondary:active { transform: scale(0.96); }
+
+/* Conic shimmer for input border on focus */
+@property --grad-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes grad-rotate {
+  to { --grad-angle: 360deg; }
+}
+.shimmer-border:focus-within::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--grad-angle), transparent 0%, var(--color-accent) 25%, transparent 50%, var(--color-accent) 75%, transparent 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: grad-rotate 3s linear infinite;
+  pointer-events: none;
+}
+
+/* Scroll containers shouldn't show scrollbars on dark */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-tertiary); }
+
+/* Smooth fade-in for img loading */
+img { transition: opacity 0.3s ease; }
+
+/* Pulse for loading skeleton */
+@keyframes shimmer-bg {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg,
+    var(--color-bg-elevated) 0%,
+    var(--color-bg-hover) 50%,
+    var(--color-bg-elevated) 100%);
+  background-size: 200% 100%;
+  animation: shimmer-bg 1.6s ease-in-out infinite;
+}

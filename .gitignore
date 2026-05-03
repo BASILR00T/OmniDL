@@ -1,0 +1,18 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Brainstorming session artifacts
+.superpowers/
+
+# IDE / harness
+.claude/
+
+# OS / temp
+Thumbs.db
+*.tmp
