@@ -4,6 +4,13 @@ A modern, mobile-first web app for downloading videos, audio, and images from an
 
 ![OmniDL](https://img.shields.io/badge/yt--dlp-nightly-success) ![React](https://img.shields.io/badge/React-19-61dafb) ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178c6) ![License](https://img.shields.io/badge/license-MIT-blue)
 
+## Deploy
+
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new/template?template=https%3A%2F%2Fgithub.com%2FBASILR00T%2FOmniDL)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FBASILR00T%2FOmniDL)
+
+> **Recommended host: Railway.** It runs the Express server long-form (no timeouts) and includes the yt-dlp Python runtime out of the box. Vercel works for TikTok-only via the tikwm fallback but can't run yt-dlp for the other platforms.
+
 ## Supported Platforms
 
 YouTube · TikTok · Instagram · Twitter / X · Facebook · Reddit · Pinterest · Snapchat · LinkedIn · Threads · SoundCloud · Vimeo
@@ -36,6 +43,46 @@ npm run dev
 ```
 
 The app runs at **[http://localhost:3000](http://localhost:3000)** — Express serves both the API and the Vite dev frontend.
+
+## Deployment
+
+### Railway *(recommended — full feature support)*
+
+```bash
+1. Visit https://railway.com/new
+2. "Deploy from GitHub repo" → select BASILR00T/OmniDL
+3. Done. Railway picks up nixpacks.toml automatically:
+   - installs Node 20, Python 3, ffmpeg
+   - runs `npm install && npm run build`
+   - starts with `npm start`
+4. Click "Generate Domain" in the service settings to get a public URL
+```
+
+Or click the [Deploy on Railway](https://railway.com/new/template?template=https%3A%2F%2Fgithub.com%2FBASILR00T%2FOmniDL) button at the top.
+
+**Optional env vars:**
+- `OMNIDL_COOKIES_FROM_BROWSER` — set to `chrome`/`firefox`/`edge` for authenticated downloads (only useful when running locally)
+- `PORT` — Railway sets this automatically
+
+### Vercel *(TikTok works fully; others limited)*
+
+```bash
+1. Click "Deploy with Vercel" above, or visit https://vercel.com/new
+2. Import the BASILR00T/OmniDL repo
+3. Vercel uses vercel.json — no extra config needed
+```
+
+**Limitations on Vercel:**
+- 60s function timeout (10s on Hobby plan) → long videos will fail
+- yt-dlp binary doesn't ship with serverless functions → Instagram, Snapchat, Threads, Facebook unsupported
+- TikTok works fully via the tikwm.com API path
+
+### Other hosts (Render, Fly.io, self-hosted)
+
+Anything that runs Node 20+ as a long-lived process works. The only requirements are:
+- `npm install && npm run build && npm start`
+- Python 3 + ffmpeg available in the container (for yt-dlp's audio post-processing)
+- Allow outbound HTTPS (yt-dlp + tikwm.com)
 
 ## Project Layout
 

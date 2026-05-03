@@ -1,0 +1,14 @@
+# Nixpacks build config for Railway / other Nixpacks-based hosts.
+# Ensures Python (required by yt-dlp's bundled binary on Linux) is installed.
+
+[phases.setup]
+nixPkgs = ["nodejs_20", "python3", "ffmpeg"]
+
+[phases.install]
+cmds = ["npm install"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm start"
